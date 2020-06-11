@@ -4,38 +4,50 @@ using UnityEngine;
 using UnityStandardAssets.Effects;
 using UnityStandardAssets.Utility;
 
-public class Extinguishing : MonoBehaviour {
+public class Extinguishing : MonoBehaviour
+{
 	public float multiplier = 1f;
 	[SerializeField] private float reduceFactor = 0.8f;
 	[SerializeField] private GameObject checkbox = null;
-	private AudioSource audioS;
+	private AudioSource _audioSource;
+	
+	private GameManager _gameManager;
 
 	// Use this for initialization
-	void Start () {
+	void Start()
+	{
 		checkbox.SetActive(false);
 		ParticleSystemMultiplier sysMul = GetComponent<ParticleSystemMultiplier>();
 		multiplier = sysMul.multiplier;
-		audioS = GetComponent<AudioSource>();
+		_audioSource = GetComponent<AudioSource>();
+		
+		// Add fire
+		_gameManager = GameManager.instance;
+		_gameManager.AddFire();
 	}
-	
+
 	// Update is called once per frame
-	void Extinguish () {
+	void Extinguish()
+	{
 		multiplier *= reduceFactor;
-		audioS.volume *= reduceFactor;
-		 var systems = GetComponentsInChildren<ParticleSystem>();
-            foreach (ParticleSystem system in systems)
-            {
-				ParticleSystem.MainModule mainModule = system.main;
-				mainModule.startSizeMultiplier *= reduceFactor;
-                mainModule.startSpeedMultiplier *= reduceFactor;
-                //mainModule.startLifetimeMultiplier *= Mathf.Lerp(multiplier, 1, 0.5f);
-                //system.Clear();
-                system.Play();
-            }
-		if (multiplier <= 0.01f) {
+		_audioSource.volume *= reduceFactor;
+		var systems = GetComponentsInChildren<ParticleSystem>();
+		foreach (ParticleSystem system in systems)
+		{
+			ParticleSystem.MainModule mainModule = system.main;
+			mainModule.startSizeMultiplier *= reduceFactor;
+			mainModule.startSpeedMultiplier *= reduceFactor;
+			system.Play();
+		}
+
+		if (multiplier <= 0.01f)
+		{
 			GetComponent<ParticleSystemDestroyer>().Stop();
 			checkbox.SetActive(true);
 			checkbox.transform.parent = null;
+
+			// Destroy fire after it is extinguished
+			_gameManager.DestroyFire();
 		}
 	}
 }
