@@ -2,23 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class lockCursor : MonoBehaviour {
+public class LockCursor : MonoBehaviour
+{
 
 	// Use this for initialization
-	void Start () {
+	void Start()
+	{
 		Cursor.lockState = CursorLockMode.Confined;
 		Cursor.visible = false;
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
-		if (Input.GetButtonDown("Cancel")) { 
+	void Update()
+	{
+		if (Input.GetButtonDown("Cancel"))
+		{
 			Cursor.lockState = CursorLockMode.None;
 			Cursor.visible = true;
 		}
-		if (Input.GetButtonDown("Fire1")) { 
-		Cursor.lockState = CursorLockMode.Confined;
-		Cursor.visible = false;
+
+		if (Input.GetButtonDown("Fire1"))
+		{
+			Cursor.lockState = CursorLockMode.Confined;
+			Cursor.visible = false;
 		}
 	}
 }

@@ -21,9 +21,12 @@ public class Extinguishing : MonoBehaviour
 		multiplier = sysMul.multiplier;
 		_audioSource = GetComponent<AudioSource>();
 		
+		// This is called every time a GameObject with this script is set to active
 		// Add fire
 		_gameManager = GameManager.instance;
 		_gameManager.AddFire();
+		// Change tag to "Fire" so we know it won't be lit randomly later
+		this.gameObject.tag = "Fire";
 	}
 
 	// Update is called once per frame
