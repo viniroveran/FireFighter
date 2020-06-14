@@ -10,12 +10,12 @@
 - [x] We need to display the number of active fires in the UI.
 
 ### User Story 3
-- [ ] We need to measure the time from the beginning of the level and stop the clock when we finish.
-- [ ] We need to define an average time for each level (manually set, based on previous attempt).
-- [ ] We need to define a base score to grade the player (between 150 to 500 pts).
-- [ ] When we finish a level, we display a summary and a score based on how long it took to complete the level. ((avgTime / timeElapsed) * timeScore);
-- [ ] We need to display the results with details in the victory end screen.
-- [ ] We need to display the elapse time in the UI.
+- [x] We need to measure the time from the beginning of the level and stop the clock when we finish.
+- [x] We need to define an average time for each level (manually set, based on previous attempt).
+- [x] We need to define a base score to grade the player (between 150 to 500 pts).
+- [x] When we finish a level, we display a summary and a score based on how long it took to complete the level. ((avgTime / timeElapsed) * timeScore);
+- [x] We need to display the results with details in the victory end screen.
+- [x] We need to display the elapse time in the UI.
 
 ### User Story 4
 - [ ] We need to measure the damage amount based on how many fires are lit, and for how long (between 0.5 to 5% / second).  damage += (damageSpeed * activeFire) * Time.deltaTime;
@@ -57,3 +57,4 @@
 
 # Credits
 **All assets provided by Marc-André Larouche**
+**Flame font: https://www.1001freefonts.com/flames.font, Font License: Free**

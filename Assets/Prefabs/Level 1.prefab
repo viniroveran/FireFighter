@@ -136,6 +136,7 @@ MonoBehaviour:
   - {fileID: 1850774983515587977}
   - {fileID: 1850774983478858006}
   - {fileID: 1850774984040005560}
+  averageTimeForLevel: 20
 --- !u!1 &1850774984458400966
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,6 +263,10 @@ PrefabInstance:
     - target: {fileID: 196238, guid: a7a402339573a4735afa000832a08986, type: 3}
       propertyPath: m_TagString
       value: Fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 196238, guid: a7a402339573a4735afa000832a08986, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 487628, guid: a7a402339573a4735afa000832a08986, type: 3}
       propertyPath: m_LocalPosition.x
@@ -496,6 +501,10 @@ PrefabInstance:
     - target: {fileID: 196238, guid: a7a402339573a4735afa000832a08986, type: 3}
       propertyPath: m_TagString
       value: Fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 196238, guid: a7a402339573a4735afa000832a08986, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 487628, guid: a7a402339573a4735afa000832a08986, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1182,6 +1191,10 @@ PrefabInstance:
     - target: {fileID: 196238, guid: a7a402339573a4735afa000832a08986, type: 3}
       propertyPath: m_TagString
       value: Fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 196238, guid: a7a402339573a4735afa000832a08986, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 487628, guid: a7a402339573a4735afa000832a08986, type: 3}
       propertyPath: m_LocalPosition.x

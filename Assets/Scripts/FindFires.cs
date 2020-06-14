@@ -7,7 +7,8 @@ public class FindFires : MonoBehaviour
 {
     [SerializeField] private int _timeToAddRandomFire = 20; // Time in seconds to lit a random fire
     [SerializeField] private GameObject[] availableFires;
-    
+    [SerializeField] private int averageTimeForLevel;
+
     private List<GameObject> _neverActiveFires = new List<GameObject>();
     private float _timerRandomFire = 0; // Timer to lit a random fire
     private int _randomFireIndex;
@@ -25,7 +26,11 @@ public class FindFires : MonoBehaviour
                 _neverActiveFires.Add(fire);
             }
         }
-        // Debug.Log("Fires: " + fires.Count);
+        // Debug.Log("Fires: " + availableFires.Length + 1);
+        
+        // Set average time for level (User Story 3.2)
+        _gameManager = GameManager.instance;
+        _gameManager.averageTime = averageTimeForLevel;
     }
 
     // Update is called once per frame
