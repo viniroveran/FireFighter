@@ -18,11 +18,11 @@
 - [x] We need to display the elapse time in the UI.
 
 ### User Story 4
-- [ ] We need to measure the damage amount based on how many fires are lit, and for how long (between 0.5 to 5% / second).  damage += (damageSpeed * activeFire) * Time.deltaTime;
-- [ ] When we complete a level, we need to give a score penalty (-10 pts/ 1%). **_Final score cannot be less than 0!_** (damage * penaltyScore);
-- [ ] If we reach 100% damage, the game ends with a Game Over screen.
-- [ ] When Game Over, we can restart the game from level 1 or exit game.
-- [ ] We need to display the damage in the UI.
+- [x] We need to measure the damage amount based on how many fires are lit, and for how long (between 0.5 to 5% / second).  damage += (damageSpeed * activeFire) * Time.deltaTime;
+- [x] When we complete a level, we need to give a score penalty (-10 pts/ 1%). **_Final score cannot be less than 0!_** (damage * penaltyScore);
+- [x] If we reach 100% damage, the game ends with a Game Over screen.
+- [x] When Game Over, we can restart the game from level 1 or exit game.
+- [x] We need to display the damage in the UI.
 
 ### User Story 5
 - [ ] We need to specify an amount of water consumed per level (between 0.05 and 1%/second active). **_The level only goes down when we use it._**

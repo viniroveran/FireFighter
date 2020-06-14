@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class FindFires : MonoBehaviour
 {
-    [SerializeField] private int _timeToAddRandomFire = 20; // Time in seconds to lit a random fire
+    [SerializeField] private int timeToAddRandomFire = 20; // Time in seconds to lit a random fire
     [SerializeField] private GameObject[] availableFires;
     [SerializeField] private int averageTimeForLevel;
 
@@ -41,7 +41,7 @@ public class FindFires : MonoBehaviour
         if (_neverActiveFires.Count > 0)
         {
             _randomFireIndex = Random.Range(0, _neverActiveFires.Count);
-            if (_timerRandomFire > _timeToAddRandomFire)
+            if (_timerRandomFire > timeToAddRandomFire)
             {
                 // Light up random fire
                 _gameManager = GameManager.instance;
