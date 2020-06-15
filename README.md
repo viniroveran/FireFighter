@@ -37,8 +37,8 @@
 - [x] Invoke the increase only after a delay (1 second) when we previously tried to extinguish the fire.
 
 ### User Story 7
-- [ ] Add a high score in PlayerPrefs for each level.
-- [ ] Display the best score in the victory screen.
+- [x] Add a high score in PlayerPrefs for each level.
+- [x] Display the best score in the victory screen.
 
 ### User Story 8
 - [ ] Add a main menu with 2 buttons: Start Game, Exit game.

@@ -41,12 +41,14 @@ public class GameManager : MonoBehaviour
     private string _penaltyPoints;
     private string _waterPoints;
     private string _totalPoints;
+    private bool _newRecord;
     [SerializeField] private Text txtVictory;
     [SerializeField] private Text txtPointsLevelPassed;
     [SerializeField] private Text txtPointsTime;
     [SerializeField] private Text txtPointsBonus;
     [SerializeField] private Text txtPointsPenalty;
     [SerializeField] private Text txtPointsWater;
+    [SerializeField] private Text txtBestScore;
     [SerializeField] private Text txtPointsTotal;
     [SerializeField] private string scoreFormat = "000";
     [SerializeField] private Button summaryScreenButtonExit;
@@ -55,10 +57,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text summaryScreenButtonRestartText;
 
     public static GameManager instance = null; // Reference to the singleton
-    public int averageTime; // Average time to complete a level, determined by FindFires script, on level prefab
-    public float waterAmount; // Water amount for the level, determined by FindFires script, on level prefab
-    public float waterAmountAtStart; // Water amount at level start
-    public bool isPaused; // Is the game paused?
+    [HideInInspector] public int averageTime; // Average time to complete a level, determined by FindFires script, on level prefab
+    [HideInInspector] public float waterAmount; // Water amount for the level, determined by FindFires script, on level prefab
+    [HideInInspector] public float waterAmountAtStart; // Water amount at level start
+    [HideInInspector] public bool isPaused; // Is the game paused?
 
     private void Awake()
     {
@@ -106,6 +108,7 @@ public class GameManager : MonoBehaviour
 
     private void AddPoints(int levelPoints)
     {
+        _newRecord = false;
         // Add Level Points only if player has won
         if (_victory)
         {
@@ -139,7 +142,16 @@ public class GameManager : MonoBehaviour
         {
             _points = 0;
         }
-        
+
+        if (_points > PlayerPrefs.GetFloat("BestScore[" + _currentLevel + "]"))
+        {
+            _newRecord = true;
+            PlayerPrefs.SetFloat("BestScore[" + _currentLevel + "]", _points);
+            
+            // Save changes to the disk
+            //PlayerPrefs.Save();
+        }
+
         //Debug.Log("Points: " + _points.ToString(scoreFormat));
     }
 
@@ -171,9 +183,29 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             
+            txtPointsTime.text = "Time: + " + _pointsForTime;
+            txtPointsBonus.text = "Bonus Points: + " + _bonusPoints;
+            txtPointsPenalty.text = "Penalty: - " + _penaltyPoints;
+            txtPointsWater.text = "Water Left: + " + _waterPoints;
+            txtPointsTotal.text = "Total: " + _points.ToString(scoreFormat);
+            
+            // If there is a Best Score for the current level, display it
+            if (PlayerPrefs.HasKey("BestScore[" + _currentLevel + "]"))
+            {
+                txtBestScore.text = "Best Score: " + PlayerPrefs.GetFloat("BestScore[" + _currentLevel + "]").ToString(scoreFormat);
+            }
+            
             if (_victory)
             {
-                txtVictory.text = "Victory!";
+                // Display best score in red if player did not set a new best score
+                txtBestScore.color = Color.red;
+                txtVictory.text = "Level Passed!";
+                if (_newRecord)
+                {
+                    txtVictory.text = "Level Passed! New Record!";
+                    // Display best score in green if player just set a new best score
+                    txtBestScore.color = Color.green;
+                }
                 txtVictory.color = Color.green;
                 txtPointsLevelPassed.text = "Level passed: + " + _pointsForCompletingLevel;
                 summaryScreenButtonExitText.text = "Exit Game";
@@ -213,12 +245,6 @@ public class GameManager : MonoBehaviour
                 _currentLevel = 0;
                 summaryScreenButtonRestart.onClick.AddListener(delegate { LoadLevel(_currentLevel); });
             }
-            
-            txtPointsTime.text = "Time: + " + _pointsForTime;
-            txtPointsBonus.text = "Bonus Points: + " + _bonusPoints;
-            txtPointsPenalty.text = "Penalty: - " + _penaltyPoints;
-            txtPointsWater.text = "Water Left: + " + _waterPoints;
-            txtPointsTotal.text = "Total: " + _points.ToString(scoreFormat);
         }
         else
         {
