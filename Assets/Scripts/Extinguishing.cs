@@ -10,6 +10,8 @@ public class Extinguishing : MonoBehaviour
 	[SerializeField] private float reduceFactor = 0.8f;
 	[SerializeField] private float increaseFactor = 1.2f;
 	[SerializeField] private GameObject checkbox = null;
+	[SerializeField] private AudioSource clearedSoundSource;
+	[SerializeField] private AudioClip clearedSound;
 	
 	private AudioSource _audioSource;
 	private GameManager _gameManager;
@@ -78,6 +80,9 @@ public class Extinguishing : MonoBehaviour
 			GetComponent<ParticleSystemDestroyer>().Stop();
 			checkbox.SetActive(true);
 			checkbox.transform.parent = null;
+			
+			// Play fire cleared sound
+			clearedSoundSource.PlayOneShot(clearedSound);
 
 			// Destroy fire after it is extinguished
 			_gameManager.DestroyFire();
