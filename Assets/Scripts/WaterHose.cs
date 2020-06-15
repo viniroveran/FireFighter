@@ -24,7 +24,7 @@ public class WaterHose : MonoBehaviour
         if (Input.GetButton("Fire1"))
         {
             // Decrease the amount of water by 1% per second (waterAmount / 100 = 1%)
-            _gameManager.DecreaseWater((_gameManager.waterAmount / 100f) * Time.deltaTime);
+            _gameManager.DecreaseWater((_gameManager.waterAmountAtStart / 100f) * Time.deltaTime);
             
             // Increase the volume over time
             _audioSource.volume = Mathf.Lerp(_audioSource.volume, 1, Time.deltaTime * 5);
