@@ -18,7 +18,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int timeScore = 50;
     [SerializeField] private int waterScore = 1000;
     [SerializeField] private float damagePerSecond = 0.5f; // Increase 0.5% of damage per active fire every second
-    [SerializeField] private GameObject summaryScreen;
+    [SerializeField] private GameObject summaryScreen; // Summary screen
+    [SerializeField] private GameObject victoryScreen; // Victory screen
     [SerializeField] private AudioSource audioSource; // Hose sound
     [SerializeField] private GameObject[] levels = null; // List of all available levels
 
@@ -88,11 +89,14 @@ public class GameManager : MonoBehaviour
         }
 
         // Reset points
-        _points = 0;
+        _points = 0f;
         
         // Reset building damage
-        _buildingDamage = 0;
+        _buildingDamage = 0f;
         txtBuildingDamage.text = _buildingDamage.ToString("00") + "%";
+        
+        // Reset Water Amount Percentage
+        _waterAmountPercentage = 100f;
     }
 
     public void Death()
@@ -111,47 +115,55 @@ public class GameManager : MonoBehaviour
     private void AddPoints(int levelPoints)
     {
         _newRecord = false;
-        // Add Level Points only if player has won
+        
+        // Add points if player has won
         if (_victory)
         {
+            // Add points for completing level
             _points += levelPoints;
             _pointsForCompletingLevel = levelPoints.ToString(scoreFormat);
+            
+            // Add points for time, average time per fire: 5 seconds
+            // (20 / 20) * 50 = 50
+            _points += ((averageTime) / _timeElapsed) * timeScore;
+            _pointsForTime = ((averageTime / _timeElapsed) * timeScore).ToString(scoreFormat);
+            //Debug.Log("Points for time: " + _pointsForTime + "Time elapsed: " + _timeElapsed);
+        
+            // Add bonus points per unlit fire
+            _points += ((14f - _totalFires) * preventionScore);
+            _bonusPoints = ((14f - _totalFires) * preventionScore).ToString(scoreFormat);
+        
+            // Add points for amount of water remaining
+            _points += ((int)_waterAmountPercentage * waterScore);
+            _waterPoints = ((int)_waterAmountPercentage * waterScore).ToString(scoreFormat);
+        
+            // Add penalty points
+            _points -= 10f * _buildingDamage;
+            _penaltyPoints = (10f * _buildingDamage).ToString(scoreFormat);
+            
+            // Add score to best score if score > BestScore[levelIndex]
+            if (_points > PlayerPrefs.GetFloat("BestScore[" + _currentLevel + "]"))
+            {
+                _newRecord = true;
+                PlayerPrefs.SetFloat("BestScore[" + _currentLevel + "]", _points);
+            
+                // Save changes to the disk
+                PlayerPrefs.Save();
+            }
         }
+        // Points = 0 if player lost
         else
         {
             _pointsForCompletingLevel = "0";
-        }
-        
-        // Add points for time, average time per fire: 5 seconds
-        // (20 / 20) * 50 = 50
-        _points += ((averageTime) / _timeElapsed) * timeScore;
-        _pointsForTime = ((averageTime / _timeElapsed) * timeScore).ToString(scoreFormat);
-        //Debug.Log("Points for time: " + _pointsForTime + "Time elapsed: " + _timeElapsed);
-        
-        // Add bonus points per unlit fire
-        _points += ((14 - _totalFires) * preventionScore);
-        _bonusPoints = ((14 - _totalFires) * preventionScore).ToString(scoreFormat);
-        
-        // Add points for amount of water remaining
-        _points += ((int)_waterAmountPercentage * waterScore);
-        _waterPoints = ((int)_waterAmountPercentage * waterScore).ToString(scoreFormat);
-        
-        // Add penalty points
-        _points -= 10 * _buildingDamage;
-        _penaltyPoints = (10 * _buildingDamage).ToString(scoreFormat);
-
-        if (_points < 0)
-        {
-            _points = 0;
+            _pointsForTime = "0";
+            _bonusPoints = "0";
+            _waterPoints = "0";
+            _penaltyPoints = "0";
         }
 
-        if (_points > PlayerPrefs.GetFloat("BestScore[" + _currentLevel + "]"))
+        if (_points < 0f)
         {
-            _newRecord = true;
-            PlayerPrefs.SetFloat("BestScore[" + _currentLevel + "]", _points);
-            
-            // Save changes to the disk
-            //PlayerPrefs.Save();
+            _points = 0f;
         }
 
         //Debug.Log("Points: " + _points.ToString(scoreFormat));
@@ -187,8 +199,8 @@ public class GameManager : MonoBehaviour
         if (paused)
         {
             isPaused = true;
-            Time.timeScale = 0;
-            audioSource.volume = 0;
+            Time.timeScale = 0f;
+            audioSource.volume = 0f;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
@@ -196,11 +208,18 @@ public class GameManager : MonoBehaviour
         {
             summaryScreen.SetActive(false);
             isPaused = false;
-            Time.timeScale = 1;
-            audioSource.volume = 1;
+            Time.timeScale = 1.0f;
+            audioSource.volume = 1.0f;
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = false;
         }
+    }
+
+    private void LoadVictoryScreen()
+    {
+        Pause(true);
+        victoryScreen.SetActive(true);
+        _currentLevel = 0;
     }
 
     public void ToggleSummary(bool activate)
@@ -250,13 +269,12 @@ public class GameManager : MonoBehaviour
                     Debug.Log("Loading Level (Next Level Button): " + _currentLevel);
                     
                 }
-                // If we are on last level
+                // If we are on last level, proceed to victory screen
                 else
                 {
-                    summaryScreenButtonRestartText.text = "Restart";
-                    _currentLevel = 0;
-                    summaryScreenButtonRestart.onClick.AddListener(delegate { LoadLevel(_currentLevel); });
-                    Debug.Log("Loading Level (Restart button): " + _currentLevel);
+                    summaryScreenButtonRestartText.text = "Next";
+                    summaryScreenButtonRestart.onClick.AddListener(LoadVictoryScreen);
+                    Debug.Log("Loading Victory Screen");
                 }
             }
             else

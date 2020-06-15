@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 1850774984425994207}
   - component: {fileID: 2672300343976821710}
   m_Layer: 0
-  m_Name: Level 2
+  m_Name: Level 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -137,7 +137,7 @@ MonoBehaviour:
   - {fileID: 1850774983515587977}
   - {fileID: 1850774983478858006}
   - {fileID: 1850774984040005560}
-  averageTimeForLevel: 35
+  averageTimeForLevel: 45
   waterAmountForLevel: 1000
 --- !u!1 &1850774984458400966
 GameObject:
@@ -485,11 +485,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 196238, guid: a7a402339573a4735afa000832a08986, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 196238, guid: a7a402339573a4735afa000832a08986, type: 3}
       propertyPath: m_TagString
-      value: Fire
+      value: FireNeverActive
       objectReference: {fileID: 0}
     - target: {fileID: 487628, guid: a7a402339573a4735afa000832a08986, type: 3}
       propertyPath: m_LocalPosition.x
@@ -669,11 +669,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 196238, guid: a7a402339573a4735afa000832a08986, type: 3}
       propertyPath: m_TagString
-      value: FireNeverActive
+      value: Fire
       objectReference: {fileID: 0}
     - target: {fileID: 196238, guid: a7a402339573a4735afa000832a08986, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 487628, guid: a7a402339573a4735afa000832a08986, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1029,11 +1029,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 196238, guid: a7a402339573a4735afa000832a08986, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 196238, guid: a7a402339573a4735afa000832a08986, type: 3}
       propertyPath: m_TagString
-      value: FireNeverActive
+      value: Fire
       objectReference: {fileID: 0}
     - target: {fileID: 487628, guid: a7a402339573a4735afa000832a08986, type: 3}
       propertyPath: m_LocalPosition.x
