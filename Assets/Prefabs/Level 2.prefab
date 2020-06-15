@@ -137,6 +137,7 @@ MonoBehaviour:
   - {fileID: 1850774983478858006}
   - {fileID: 1850774984040005560}
   averageTimeForLevel: 30
+  waterAmountForLevel: 1000
 --- !u!1 &1850774984458400966
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,12 +25,12 @@
 - [x] We need to display the damage in the UI.
 
 ### User Story 5
-- [ ] We need to specify an amount of water consumed per level (between 0.05 and 1%/second active). **_The level only goes down when we use it._**
-- [ ] If we ran out of water, the game ends with Game Over.
-- [ ] We need to specify different amount per level, to make the game more intense.
-- [ ] Every level must be beatable! – Test your late levels to make sure it is playable.
-- [ ] When we complete a level, we need to display a score based on the amount of water remaining (1000 pts/1%). (waterLeft * scoreWater);
-- [ ] We need to display the amount of water remaining in the UI.
+- [x] We need to specify an amount of water consumed per level (between 0.05 and 1%/second active). **_The level only goes down when we use it._**
+- [x] If we ran out of water, the game ends with Game Over.
+- [x] We need to specify different amount per level, to make the game more intense.
+- [x] Every level must be beatable! – Test your late levels to make sure it is playable.
+- [x] When we complete a level, we need to display a score based on the amount of water remaining (1000 pts/1%). (waterLeft * scoreWater);
+- [x] We need to display the amount of water remaining in the UI.
 
 ### User Story 6
 - [ ] Slowly increase the intensity back when the value is below the original intensity (3) if we are not trying to extinguish it.

@@ -8,6 +8,7 @@ public class FindFires : MonoBehaviour
     [SerializeField] private int timeToAddRandomFire = 20; // Time in seconds to lit a random fire
     [SerializeField] private GameObject[] availableFires;
     [SerializeField] private int averageTimeForLevel;
+    [SerializeField] private int waterAmountForLevel;
 
     private List<GameObject> _neverActiveFires = new List<GameObject>();
     private float _timerRandomFire = 0; // Timer to lit a random fire
@@ -31,6 +32,10 @@ public class FindFires : MonoBehaviour
         // Set average time for level (User Story 3.2)
         _gameManager = GameManager.instance;
         _gameManager.averageTime = averageTimeForLevel;
+        
+        // Set water amount for level (User Story 5.3)
+        _gameManager.waterAmount = waterAmountForLevel;
+        _gameManager.waterAmountAtStart = waterAmountForLevel;
     }
 
     // Update is called once per frame

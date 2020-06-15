@@ -9,14 +9,16 @@ using Random = UnityEngine.Random;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Text txtFire;
+    [SerializeField] private Text txtWater;
     [SerializeField] private Text txtBuildingDamage;
     [SerializeField] private Text txtTimer;
     [SerializeField] private int preventionScore = 10;
     [SerializeField] private int pointsPerLevelComplete = 200;
     [SerializeField] private int timeScore = 50;
+    [SerializeField] private int waterScore = 1000;
     [SerializeField] private float damagePerSecond = 0.5f; // Increase 0.5% of damage per active fire every second
     [SerializeField] private GameObject summaryScreen;
-    [SerializeField] private AudioSource _audioSource; // Hose sound
+    [SerializeField] private AudioSource audioSource; // Hose sound
     [SerializeField] private GameObject[] levels = null; // List of all available levels
 
     private int _fires = 0; // Number of active fires
@@ -26,23 +28,25 @@ public class GameManager : MonoBehaviour
     private float _startTime; // Start time
     private float _timeElapsed = 0; // Time elapsed till now
     private bool _victory = true; // If player has won or not
+    private float _waterAmountPercentage; // Percentage of water amount
     private GameObject _levelObj; // Container for the current level
     
     // Building damage
     private float _buildingDamage = 0;
     
     // Scoring
-    public int averageTime;
     private string _pointsForCompletingLevel;
     private string _pointsForTime;
     private string _bonusPoints;
     private string _penaltyPoints;
+    private string _waterPoints;
     private string _totalPoints;
     [SerializeField] private Text txtVictory;
     [SerializeField] private Text txtPointsLevelPassed;
     [SerializeField] private Text txtPointsTime;
     [SerializeField] private Text txtPointsBonus;
     [SerializeField] private Text txtPointsPenalty;
+    [SerializeField] private Text txtPointsWater;
     [SerializeField] private Text txtPointsTotal;
     [SerializeField] private string scoreFormat = "000";
     [SerializeField] private Button summaryScreenButtonExit;
@@ -51,6 +55,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text summaryScreenButtonRestartText;
 
     public static GameManager instance = null; // Reference to the singleton
+    public int averageTime; // Average time to complete a level, determined by FindFires script, on level prefab
+    public float waterAmount; // Water amount for the level, determined by FindFires script, on level prefab
+    public float waterAmountAtStart; // Water amount at level start
 
     private void Awake()
     {
@@ -119,6 +126,10 @@ public class GameManager : MonoBehaviour
         _points += ((14 - _totalFires) * preventionScore);
         _bonusPoints = ((14 - _totalFires) * preventionScore).ToString(scoreFormat);
         
+        // Add points for amount of water remaining
+        _points += ((int)_waterAmountPercentage * waterScore);
+        _waterPoints = ((int)_waterAmountPercentage * waterScore).ToString(scoreFormat);
+        
         // Add penalty points
         _points -= 10 * _buildingDamage;
         _penaltyPoints = (10 * _buildingDamage).ToString(scoreFormat);
@@ -154,7 +165,7 @@ public class GameManager : MonoBehaviour
             summaryScreen.SetActive(true);
             //Debug.Log("Enabling summary");
             Time.timeScale = 0;
-            _audioSource.volume = 0;
+            audioSource.volume = 0;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             
@@ -204,13 +215,14 @@ public class GameManager : MonoBehaviour
             txtPointsTime.text = "Time: + " + _pointsForTime;
             txtPointsBonus.text = "Bonus Points: + " + _bonusPoints;
             txtPointsPenalty.text = "Penalty: - " + _penaltyPoints;
+            txtPointsWater.text = "Water Left: + " + _waterPoints;
             txtPointsTotal.text = "Total: " + _points.ToString(scoreFormat);
         }
         else
         {
             summaryScreen.SetActive(false);
             Time.timeScale = 1;
-            _audioSource.volume = 1;
+            audioSource.volume = 1;
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = false;
         }
@@ -258,7 +270,7 @@ public class GameManager : MonoBehaviour
         
         // Reset the level Timer
         _startTime = Time.time;
-        
+
         // Copy the level at position _currentLevel
         _levelObj = Instantiate(levels[_currentLevel]);
         Debug.Log("Loading Level: " + _currentLevel);
@@ -281,7 +293,7 @@ public class GameManager : MonoBehaviour
         
         // Reset the level Timer
         _startTime = Time.time;
-        
+
         // Copy the level at position _currentLevel
         _levelObj = Instantiate(levels[levelIndex]);
         Debug.Log("Loading Level (parameters): " + levelIndex);
@@ -300,6 +312,11 @@ public class GameManager : MonoBehaviour
         ToggleSummary(true);
     }
 
+    public void DecreaseWater(float amount)
+    {
+        waterAmount -= amount;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -311,6 +328,10 @@ public class GameManager : MonoBehaviour
         // Update number of active fires on UI
         txtFire.text = _fires.ToString();
         
+        // Update water amount on UI
+        _waterAmountPercentage = (waterAmount * 100) / waterAmountAtStart;
+        txtWater.text = _waterAmountPercentage.ToString("00") + "%";
+
         // Store how much time passed since level was loaded
         _timeElapsed = Time.time - _startTime;
         
@@ -328,6 +349,12 @@ public class GameManager : MonoBehaviour
     {
         // Game over if _buildingDamage >= 100
         if (_buildingDamage >= 100)
+        {
+            FinishLevel(false);
+        }
+        
+        // Game over if waterAmount <= 0
+        if (_waterAmountPercentage <= 0)
         {
             FinishLevel(false);
         }
