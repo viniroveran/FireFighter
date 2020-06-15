@@ -49,7 +49,6 @@ public class FindFires : MonoBehaviour
             if (_timerRandomFire > timeToAddRandomFire)
             {
                 // Light up random fire
-                _gameManager = GameManager.instance;
                 _neverActiveFires = _gameManager.LitRandomFire(_neverActiveFires, _randomFireIndex);
                 
                 // Reset timer so we can activate another random fire in 20 seconds

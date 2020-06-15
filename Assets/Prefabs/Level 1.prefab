@@ -1081,6 +1081,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 19872392, guid: a7a402339573a4735afa000832a08986, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 114828238754060972, guid: a7a402339573a4735afa000832a08986,
         type: 3}
       propertyPath: reduceFactor

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Effects;
@@ -6,12 +7,15 @@ using UnityStandardAssets.Utility;
 
 public class Extinguishing : MonoBehaviour
 {
-	public float multiplier = 1f;
 	[SerializeField] private float reduceFactor = 0.8f;
+	[SerializeField] private float increaseFactor = 1.2f;
 	[SerializeField] private GameObject checkbox = null;
-	private AudioSource _audioSource;
 	
+	private AudioSource _audioSource;
 	private GameManager _gameManager;
+	private float _fireTimer;
+	
+	public float multiplier = 1f;
 
 	// Use this for initialization
 	void Start()
@@ -25,24 +29,50 @@ public class Extinguishing : MonoBehaviour
 		// Add fire
 		_gameManager = GameManager.instance;
 		_gameManager.AddFire();
+		
 		// Change tag to "Fire" so we know it won't be lit randomly later
 		this.gameObject.tag = "Fire";
 	}
 
 	// Update is called once per frame
-	void Extinguish()
+	private void Update()
 	{
-		multiplier *= reduceFactor;
-		_audioSource.volume *= reduceFactor;
+		_fireTimer += Time.deltaTime;
+
+		if (_fireTimer > 1 && multiplier < 2)
+		{
+			ChangeFireSize(increaseFactor);
+
+			if (multiplier >= 2)
+			{
+				_fireTimer = 0;
+			}
+		}
+	}
+
+	private void ChangeFireSize(float factor)
+	{
+		multiplier *= factor;
+		_audioSource.volume *= factor;
+		
 		var systems = GetComponentsInChildren<ParticleSystem>();
 		foreach (ParticleSystem system in systems)
 		{
 			ParticleSystem.MainModule mainModule = system.main;
-			mainModule.startSizeMultiplier *= reduceFactor;
-			mainModule.startSpeedMultiplier *= reduceFactor;
+			mainModule.startSizeMultiplier *= factor;
+			mainModule.startSpeedMultiplier *= factor;
 			system.Play();
 		}
-
+	}
+	
+	void Extinguish()
+	{
+		// Reduce fire size because it is being extinguished
+		ChangeFireSize(reduceFactor);
+		
+		// Fire is being extinguished, reset timer
+		_fireTimer = 0;
+		
 		if (multiplier <= 0.01f)
 		{
 			GetComponent<ParticleSystemDestroyer>().Stop();

@@ -33,8 +33,8 @@
 - [x] We need to display the amount of water remaining in the UI.
 
 ### User Story 6
-- [ ] Slowly increase the intensity back when the value is below the original intensity (3) if we are not trying to extinguish it.
-- [ ] Invoke the increase only after a delay (1 second) when we previously tried to extinguish the fire.
+- [x] Slowly increase the intensity back when the value is below the original intensity (3) if we are not trying to extinguish it.
+- [x] Invoke the increase only after a delay (1 second) when we previously tried to extinguish the fire.
 
 ### User Story 7
 - [ ] Add a high score in PlayerPrefs for each level.

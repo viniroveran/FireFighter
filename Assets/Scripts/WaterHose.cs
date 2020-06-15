@@ -21,9 +21,9 @@ public class WaterHose : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButton("Fire1") && !_gameManager.isPaused)
         {
-            // Decrease the amount of water by 1% per second (waterAmount / 100 = 1%)
+            // Decrease the amount of water by 1% per second (waterAmountAtStart / 100 = 1%)
             _gameManager.DecreaseWater((_gameManager.waterAmountAtStart / 100f) * Time.deltaTime);
             
             // Increase the volume over time

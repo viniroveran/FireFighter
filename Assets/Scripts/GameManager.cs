@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     private float _startTime; // Start time
     private float _timeElapsed = 0; // Time elapsed till now
     private bool _victory = true; // If player has won or not
-    private float _waterAmountPercentage; // Percentage of water amount
+    private float _waterAmountPercentage = 100f; // Percentage of water amount
     private GameObject _levelObj; // Container for the current level
     
     // Building damage
@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
     public int averageTime; // Average time to complete a level, determined by FindFires script, on level prefab
     public float waterAmount; // Water amount for the level, determined by FindFires script, on level prefab
     public float waterAmountAtStart; // Water amount at level start
+    public bool isPaused; // Is the game paused?
 
     private void Awake()
     {
@@ -164,6 +165,7 @@ public class GameManager : MonoBehaviour
         {
             summaryScreen.SetActive(true);
             //Debug.Log("Enabling summary");
+            isPaused = true;
             Time.timeScale = 0;
             audioSource.volume = 0;
             Cursor.lockState = CursorLockMode.None;
@@ -221,6 +223,7 @@ public class GameManager : MonoBehaviour
         else
         {
             summaryScreen.SetActive(false);
+            isPaused = false;
             Time.timeScale = 1;
             audioSource.volume = 1;
             Cursor.lockState = CursorLockMode.Confined;
@@ -258,7 +261,7 @@ public class GameManager : MonoBehaviour
     {
         // Initialize level to make sure everything is how it is supposed to be
         Invoke(nameof(Init), 0);
-        
+
         // If old level is loaded
         if (_levelObj)
         {
@@ -315,6 +318,11 @@ public class GameManager : MonoBehaviour
     public void DecreaseWater(float amount)
     {
         waterAmount -= amount;
+        _waterAmountPercentage = (waterAmount * 100) / waterAmountAtStart;
+        if (waterAmount <= 0)
+        {
+            FinishLevel(false);
+        }
     }
 
     // Start is called before the first frame update
@@ -329,8 +337,7 @@ public class GameManager : MonoBehaviour
         txtFire.text = _fires.ToString();
         
         // Update water amount on UI
-        _waterAmountPercentage = (waterAmount * 100) / waterAmountAtStart;
-        txtWater.text = _waterAmountPercentage.ToString("00") + "%";
+        txtWater.text = _waterAmountPercentage.ToString("0") + "%";
 
         // Store how much time passed since level was loaded
         _timeElapsed = Time.time - _startTime;
@@ -341,22 +348,30 @@ public class GameManager : MonoBehaviour
         txtTimer.text = minutes + ":" + seconds;
         
         // Increase building damage by 1% per fire every second
-        _buildingDamage += (damagePerSecond * _fires) * Time.deltaTime;
-        txtBuildingDamage.text = _buildingDamage.ToString("00") + "%";
+        // Fix for FinishLevel being called infinite times because of buildingDamage > 100
+        if (_buildingDamage <= 100)
+        {
+            _buildingDamage += (damagePerSecond * _fires) * Time.deltaTime;
+        }
+        else
+        {
+            _buildingDamage = 100;
+        }
+        txtBuildingDamage.text = _buildingDamage.ToString("0") + "%";
     }
 
     private void LateUpdate()
     {
-        // Game over if _buildingDamage >= 100
-        if (_buildingDamage >= 100)
+        // Game over if _buildingDamage > 100
+        if (_buildingDamage > 100)
         {
             FinishLevel(false);
         }
         
-        // Game over if waterAmount <= 0
-        if (_waterAmountPercentage <= 0)
-        {
-            FinishLevel(false);
-        }
+        // Game over if waterAmountPercentage < 0
+        // if (waterAmount < 0)
+        // {
+        //     FinishLevel(false);
+        // }
     }
 }

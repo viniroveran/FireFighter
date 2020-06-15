@@ -2879,6 +2879,7 @@ MonoBehaviour:
   averageTime: 0
   waterAmount: 0
   waterAmountAtStart: 0
+  isPaused: 0
 --- !u!4 &1083460387
 Transform:
   m_ObjectHideFlags: 0
