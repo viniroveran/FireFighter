@@ -7,7 +7,6 @@ TagManager:
   - Fire
   - Checkbox
   - FireNeverActive
-  - Summary
   layers:
   - Default
   - TransparentFX

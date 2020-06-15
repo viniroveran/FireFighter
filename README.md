@@ -51,11 +51,15 @@
 - [ ] Create an ending screen to say congratulations to winning player and then add a button to return to the main menu (or quit the game if you don’t have any.)
 
 ### User Story 10
-- [ ] Add an icon for the build.
-- [ ] Add a Config dialog image.
-- [ ] Remove unused inputs in the input manager.
+- [x] Add an icon for the build.
+- [x] Add a Config dialog image.
+- [x] Remove unused inputs in the input manager.
 
 # Credits
 **All assets provided by Marc-André Larouche**
 
 **Flame font: https://www.1001freefonts.com/flames.font, Font License: Free**
+
+**Firefighter Icon: https://www.flaticon.com/free-icon/firefighter_206877**
+
+**LaSalle College Montreal logo: https://www.lasallecollege.com/student-ressources/wifi**
