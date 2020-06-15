@@ -58,9 +58,9 @@
 # Credits
 **All assets provided by Marc-André Larouche**
 
-**Flame font: https://www.1001freefonts.com/flames.font, Font License: Free**
+**Flame font: https://www.1001freefonts.com/flames.font, License: Free**
 
-**Firefighter Icon: https://www.flaticon.com/free-icon/firefighter_206877**
+**Firefighter Icon: https://www.flaticon.com/free-icon/firefighter_206877, License: Flaticon License (Free for personal and commercial purpose with attribution)**
 
 **LaSalle College Montreal logo: https://www.lasallecollege.com/student-ressources/wifi**
 
