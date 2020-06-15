@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1850774984425994207}
   m_Layer: 0
-  m_Name: LevelLoadScene
+  m_Name: LevelMainMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

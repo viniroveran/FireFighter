@@ -41,10 +41,10 @@
 - [x] Display the best score in the victory screen.
 
 ### User Story 8
-- [ ] Add a main menu with 2 buttons: Start Game, Exit game.
-- [ ] When we’re Game Over, we need to replace the button Exit game by Go to Main menu.
-- [ ] Add loading screen between scenes in the Build Settings.
-- [ ] The UI must always look good on different resolutions screen and aspect ratio.
+- [x] Add a main menu with 2 buttons: Start Game, Exit game.
+- [x] When we’re Game Over, we need to replace the button Exit game by Go to Main menu.
+- [x] Add loading screen between scenes in the Build Settings.
+- [x] The UI must always look good on different resolutions screen and aspect ratio.
 
 ### User Story 9
 - [ ] Create between 5 to 10 levels with increasingly more difficulty in the game manager.
@@ -63,3 +63,5 @@
 **Firefighter Icon: https://www.flaticon.com/free-icon/firefighter_206877**
 
 **LaSalle College Montreal logo: https://www.lasallecollege.com/student-ressources/wifi**
+
+**Siren ambiance sound: https://freesound.org/people/contramundum/sounds/322958/, License: Creative Commons 0**

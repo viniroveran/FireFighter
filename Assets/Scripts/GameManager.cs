@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour
     private bool _victory = true; // If player has won or not
     private float _waterAmountPercentage = 100f; // Percentage of water amount
     private GameObject _levelObj; // Container for the current level
+    private AsyncOperation _asyncOperation;
     
     // Building damage
     private float _buildingDamage = 0;
@@ -168,7 +170,37 @@ public class GameManager : MonoBehaviour
 
     public void LoadMainMenu()
     {
+        // If haven't tried to load anything yet
+        if (_asyncOperation == null)
+        {
+            _asyncOperation = SceneManager.LoadSceneAsync("MainMenu"); // Load Main Menu
+            _asyncOperation.allowSceneActivation = true;
+        }
+    }
+
+    public void Pause(bool paused)
+    {
+        // Clear all listeners to avoid duplicate/not wanted listener
+        summaryScreenButtonExit.onClick.RemoveAllListeners();
+        summaryScreenButtonRestart.onClick.RemoveAllListeners();
         
+        if (paused)
+        {
+            isPaused = true;
+            Time.timeScale = 0;
+            audioSource.volume = 0;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            summaryScreen.SetActive(false);
+            isPaused = false;
+            Time.timeScale = 1;
+            audioSource.volume = 1;
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = false;
+        }
     }
 
     public void ToggleSummary(bool activate)
@@ -177,11 +209,7 @@ public class GameManager : MonoBehaviour
         {
             summaryScreen.SetActive(true);
             //Debug.Log("Enabling summary");
-            isPaused = true;
-            Time.timeScale = 0;
-            audioSource.volume = 0;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            Pause(true);
             
             txtPointsTime.text = "Time: + " + _pointsForTime;
             txtPointsBonus.text = "Bonus Points: + " + _bonusPoints;
@@ -237,8 +265,8 @@ public class GameManager : MonoBehaviour
                 txtVictory.color = Color.red;
                 txtPointsLevelPassed.text = "Level failed: + 0";
                 
-                summaryScreenButtonExitText.text = "Exit Game";
-                summaryScreenButtonExit.onClick.AddListener(Exit);
+                summaryScreenButtonExitText.text = "Main Menu";
+                summaryScreenButtonExit.onClick.AddListener(delegate { LoadMainMenu(); });
                 
                 summaryScreenButtonRestartText.text = "Restart";
                 summaryScreenButtonRestart.onClick.AddListener(delegate { ToggleSummary(false); });
@@ -248,12 +276,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            summaryScreen.SetActive(false);
-            isPaused = false;
-            Time.timeScale = 1;
-            audioSource.volume = 1;
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = false;
+            Pause(false);
         }
     }
 
