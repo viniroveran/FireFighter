@@ -57,4 +57,5 @@
 
 # Credits
 **All assets provided by Marc-André Larouche**
+
 **Flame font: https://www.1001freefonts.com/flames.font, Font License: Free**
